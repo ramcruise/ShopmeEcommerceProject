@@ -1,0 +1,6 @@
+package com.shopme.admin.user;
+
+@Data
+public class RoleRepositoryTests {
+
+}

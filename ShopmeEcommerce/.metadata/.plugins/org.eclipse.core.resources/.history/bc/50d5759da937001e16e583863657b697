@@ -1,0 +1,31 @@
+package com.shopme.admin.user;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
+
+import com.shopme.common.entity.Role;
+import com.shopme.common.entity.User;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Rollback(false)
+public class UserRepositoryTests {
+	
+	@Autowired
+	private UserRepository repo;
+	
+	@Autowired
+	private TestEntityManager entityManager;
+	
+	@Test
+	public void testCreateUser() {
+		entityManager.find(Role.class, entityManager);
+		User userRam = new User("rambabu0216@gmail.com","Rambabu0216@","rambabu","yadav");
+		userRam.addRole(null);
+	}
+}
