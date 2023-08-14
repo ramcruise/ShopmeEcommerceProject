@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.common.entity.User;
@@ -44,11 +46,13 @@ public class UserController {
 	}
 
 	@PostMapping("/users/save")
-	public String saveUser(User user, RedirectAttributes redirectAttributes) {
+	public String saveUser(User user, RedirectAttributes redirectAttributes, 
+			@RequestParam("image") MultipartFile multipart) {
 		System.out.println(user);
-		service.save(user);
+		System.out.println(multipart.getOriginalFilename());
+		//service.save(user);
 
-		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
+		//redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
 
 		return "redirect:/users";
 	}
@@ -80,6 +84,17 @@ public class UserController {
 		} catch (UserNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message", ex.getMessage());
 		}
+		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/{id}/enabled/{status}")
+	public String updateUserEnabledStatus(@PathVariable("id") Integer id, @PathVariable("status") boolean enabled, 
+			RedirectAttributes redirectAttributes) {
+		service.updateUserEnabledStatus(id, enabled);
+		String status = enabled ? "enabled" : "disabled";
+		String message = "The user ID "+ id +" has been "+status;
+		redirectAttributes.addFlashAttribute("message", message);
+		
 		return "redirect:/users";
 	}
 
